@@ -78,6 +78,18 @@ public class UserServiceImpl implements UserService {
     return userConverter.converEntityToResponseDTO(userEntity);
   }
 
+  @Override
+  public ResponseEntity<?> forgotPassWord(String userName) {
+    Optional<UserEntity> user = userRepository.findByUsername(userName);
+    if (!user.isPresent()) {
+      throw new UsernameNotFoundException(String.format("User with username : %s not found ", userName));
+    }
+    UserEntity userEntity = user.get();
+    String passWord = RandomStringUtils.randomAlphanumeric(5);
+    mailService.sendMail(gmail, "Mật khẩu mới của bạn là: " + passWord);
+    userEntity.setPassword(passwordEncoder.encode(passWord));
+    return ResponseEntity.ok(userConverter.converEntityToDTO(userRepository.save(userEntity)));
+  }
 
   @Override
   public ResponseEntity<?> createNewUser(@Valid UserRequestDTO userDTO,

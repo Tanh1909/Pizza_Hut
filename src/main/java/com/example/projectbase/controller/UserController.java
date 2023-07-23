@@ -53,6 +53,11 @@ public class UserController {
     return VsResponseUtil.success(userService.getCustomers(requestDTO));
   }
 
+  @PostMapping("/forgot-password")
+  public ResponseEntity<?> forgotPassWord(@RequestParam String userName){
+    return userService.forgotPassWord(userName);
+  }
+
   @PostMapping("/new-user")
   public ResponseEntity<?> createUser (@Valid @RequestBody UserRequestDTO userDTO, BindingResult bindingResult) {
     return userService.createNewUser(userDTO, bindingResult);

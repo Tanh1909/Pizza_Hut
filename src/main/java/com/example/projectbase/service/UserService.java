@@ -17,5 +17,7 @@ public interface UserService {
 
   UserDto getCurrentUser(UserPrincipal principal);
 
+  ResponseEntity<?> forgotPassWord(String userName);
+
   ResponseEntity<?> createNewUser(UserRequestDTO userDTO, BindingResult bindingResult);
 }
