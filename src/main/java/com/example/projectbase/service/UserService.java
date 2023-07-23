@@ -3,6 +3,7 @@ package com.example.projectbase.service;
 import com.example.projectbase.domain.dto.pagination.PaginationFullRequestDto;
 import com.example.projectbase.domain.dto.pagination.PaginationResponseDto;
 import com.example.projectbase.domain.dto.request.LoginRequestDto;
+import com.example.projectbase.domain.dto.request.UserCreateDTO;
 import com.example.projectbase.domain.dto.request.UserRequestDTO;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.security.UserPrincipal;
@@ -20,4 +21,6 @@ public interface UserService {
   ResponseEntity<?> forgotPassWord(String userName);
 
   ResponseEntity<?> createNewUser(UserRequestDTO userDTO, BindingResult bindingResult);
+
+  ResponseEntity<?> updateUser(UserCreateDTO userDTO, BindingResult bindingResult);
 }

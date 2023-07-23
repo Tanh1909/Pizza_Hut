@@ -5,6 +5,7 @@ import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.constant.UrlConstant;
 import com.example.projectbase.domain.dto.pagination.PaginationFullRequestDto;
 import com.example.projectbase.domain.dto.request.LoginRequestDto;
+import com.example.projectbase.domain.dto.request.UserCreateDTO;
 import com.example.projectbase.domain.dto.request.UserRequestDTO;
 import com.example.projectbase.security.CurrentUser;
 import com.example.projectbase.security.UserPrincipal;
@@ -61,5 +62,10 @@ public class UserController {
   @PostMapping("/new-user")
   public ResponseEntity<?> createUser (@Valid @RequestBody UserRequestDTO userDTO, BindingResult bindingResult) {
     return userService.createNewUser(userDTO, bindingResult);
+  }
+
+  @PutMapping
+  public ResponseEntity<?> updateUser (@Valid @ModelAttribute UserCreateDTO userDTO, BindingResult bindingResult) {
+    return userService.updateUser(userDTO, bindingResult);
   }
 }

@@ -1,6 +1,5 @@
 package com.example.projectbase.domain.mapper;
 
-import com.example.projectbase.domain.dto.request.UserCreateDto;
 import com.example.projectbase.domain.dto.request.UserRequestDTO;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.UserEntity;
