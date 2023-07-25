@@ -9,7 +9,6 @@ import com.example.projectbase.domain.dto.request.UserRequestDTO;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.RoleEntity;
 import com.example.projectbase.domain.entity.UserEntity;
-//import com.example.projectbase.domain.mapper.UserMapper;
 import com.example.projectbase.email.MailService;
 import com.example.projectbase.exception.AlreadyExistsException;
 import com.example.projectbase.exception.NotFoundException;
@@ -82,11 +81,11 @@ public class UserServiceImpl implements UserService {
   public ResponseEntity<?> forgotPassWord(String userName) {
     Optional<UserEntity> user = userRepository.findByUsername(userName);
     if (!user.isPresent()) {
-      throw new UsernameNotFoundException(String.format("User with username : %s not found ", userName));
+      throw new UsernameNotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME);
     }
     UserEntity userEntity = user.get();
     String passWord = RandomStringUtils.randomAlphanumeric(5);
-    mailService.sendMail(gmail, "Mật khẩu mới của bạn là: " + passWord);
+    mailService.sendMail(gmail, ErrorMessage.User.INF_NEW_PASSWORD + passWord);
     userEntity.setPassword(passwordEncoder.encode(passWord));
     return ResponseEntity.ok(userConverter.converEntityToDTO(userRepository.save(userEntity)));
   }
@@ -97,15 +96,15 @@ public class UserServiceImpl implements UserService {
     BindingResultUtils.bindResult(bindingResult);
     Optional<UserEntity> userUserName = userRepository.findByUsername(userDTO.getUsername());
     if(userUserName.isPresent() ){
-      throw new AlreadyExistsException("User already exists with username " + userDTO.getUsername());
+      throw new AlreadyExistsException(ErrorMessage.User.ALREADY_OBJECT_WITH_USERNAME + userDTO.getUsername());
     }
     UserEntity userEntity = userRepository.findByEmail(userDTO.getEmail());
     if(userEntity != null) {
-      throw new AlreadyExistsException("User already exists with username " + userDTO.getEmail());
+      throw new AlreadyExistsException(ErrorMessage.User.ALREADY_OBJECT_WITH_USERNAME + userDTO.getEmail());
     }
     userEntity = userRepository.findByPhone(userDTO.getPhoneNumber());
     if(userEntity != null){
-      throw new AlreadyExistsException("User already exists with phone " + userDTO.getPhoneNumber());
+      throw new AlreadyExistsException(ErrorMessage.User.ALREADY_OBJECT_WITH_PHONE + userDTO.getPhoneNumber());
     }
     UserEntity userEntitySave = userConverter.converDTOToEntity(userDTO);
     RoleEntity role = roleRepository.findByRoleName("ROLE_USER");

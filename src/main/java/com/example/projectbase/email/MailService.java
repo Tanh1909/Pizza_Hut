@@ -1,5 +1,6 @@
 package com.example.projectbase.email;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,9 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @Service
 public class MailService implements MailSender {
-
-    private final static Logger log = LoggerFactory.getLogger(MailSender.class);
 
     @Autowired
     private JavaMailSender javaMailSender;
