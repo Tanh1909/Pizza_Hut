@@ -29,9 +29,14 @@ import org.springframework.validation.BindingResult;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+  private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
   private final UserRepository userRepository;
 
@@ -77,16 +82,38 @@ public class UserServiceImpl implements UserService {
     return userConverter.converEntityToResponseDTO(userEntity);
   }
 
+//  @Override
+//  public ResponseEntity<?> forgotPassWord(String userName) {
+//    Optional<UserEntity> user = userRepository.findByUsername(userName);
+//    if (!user.isPresent()) {
+//      throw new UsernameNotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME);
+//    }
+//    UserEntity userEntity = user.get();
+//    String passWord = RandomStringUtils.randomAlphanumeric(5);
+//    CompletableFuture<String> mailResult = mailService.sendMail(gmail, ErrorMessage.User.INF_NEW_PASSWORD + passWord);
+//    userEntity.setPassword(passwordEncoder.encode(passWord));
+//    return ResponseEntity.ok(userConverter.converEntityToDTO(userRepository.save(userEntity)));
+//  }
+
   @Override
-  public ResponseEntity<?> forgotPassWord(String userName) {
+  public ResponseEntity<?> forgotPassWord(String userName)  {
     Optional<UserEntity> user = userRepository.findByUsername(userName);
     if (!user.isPresent()) {
       throw new UsernameNotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME);
     }
     UserEntity userEntity = user.get();
     String passWord = RandomStringUtils.randomAlphanumeric(5);
-    mailService.sendMail(gmail, ErrorMessage.User.INF_NEW_PASSWORD + passWord);
+
+    // Thực hiện việc gửi mail bất đồng bộ trong một task riêng biệt
+    CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+      mailService.sendMail(gmail, String.format(ErrorMessage.User.INF_NEW_PASSWORD, passWord));
+    }, executorService);
+
+    // Thực hiện các tác vụ khác
     userEntity.setPassword(passwordEncoder.encode(passWord));
+    // Tiếp tục thực hiện các tác vụ khác nếu cần
+
+    // Trả kết quả về cho client ngay lập tức
     return ResponseEntity.ok(userConverter.converEntityToDTO(userRepository.save(userEntity)));
   }
 

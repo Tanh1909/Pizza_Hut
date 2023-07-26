@@ -1,5 +1,7 @@
 package com.example.projectbase.email;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface MailSender {
-    String sendMail(String to, String email);
+    CompletableFuture<String> sendMail(String to, String email);
 }

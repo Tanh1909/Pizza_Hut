@@ -29,7 +29,7 @@ public class ErrorMessage {
   public static class User {
     public static final String ERR_NOT_FOUND_USERNAME = "exception.user.not.found.username";
     public static final String ERR_NOT_FOUND_ID = "exception.user.not.found.id";
-    public static final String INF_NEW_PASSWORD = "new password is ";
+    public static final String INF_NEW_PASSWORD = "New password is %s";
     public static final String ALREADY_OBJECT_WITH_USERNAME = "User already exists with username ";
     public static final String ALREADY_OBJECT_WITH_PHONE = "User already exists with phone number ";
   }
