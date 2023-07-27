@@ -1,10 +1,11 @@
 package com.example.projectbase.converter;
 
 import com.example.projectbase.domain.dto.common.UserDetailImp;
-import com.example.projectbase.domain.dto.request.UserRequestDTO;
-import com.example.projectbase.domain.dto.response.UserDto;
+import com.example.projectbase.domain.dto.request.UserCreateDTO;
+import com.example.projectbase.domain.entity.CartEntity;
 import com.example.projectbase.domain.entity.RoleEntity;
 import com.example.projectbase.domain.entity.UserEntity;
+
 import com.example.projectbase.repository.RoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,44 +21,39 @@ public class UserConverter {
 
     @Autowired
     ModelMapper modelMapper;
-//    @Autowired
-//    RoleRepository roleRepository;
+    @Autowired
+    RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    hàm conver đang sai, cần sửa
-    public UserEntity converDTOToEntity(UserRequestDTO userDTO, UserEntity userEntity){
-        String id = userEntity.getId();
-        userEntity = modelMapper.map(userDTO, UserEntity.class);
-        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-//        RoleEntity role = roleRepository.findByRoleName("ROLE_USER");
-//        userEntity.setRoleEntity(role);
-        userEntity.setId(id);
-        return userEntity;
-    }
-
-    public UserEntity converDTOToEntity(UserRequestDTO userDTO){
+    public UserEntity converDTOToEntity(UserCreateDTO userDTO, UserDetailImp userDetailImp){
         UserEntity userEntity = modelMapper.map(userDTO, UserEntity.class);
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-//        RoleEntity role = roleRepository.findByRoleName("ROLE_USER");
-//        userEntity.setRoleEntity(role);
+        RoleEntity role = roleRepository.findByRoleName("ROLE_USER");
+        userEntity.setRoleEntity(role);
+        userEntity.setId(userDetailImp.getId());
+        userEntity.setUsername(userDetailImp.getUsername());
+
         return userEntity;
     }
 
-    public UserRequestDTO converEntityToDTO(UserEntity userEntity){
-        UserRequestDTO userDTO = modelMapper.map(userEntity, UserRequestDTO.class);
-        return userDTO;
+    public UserEntity converDTOToEntity(UserCreateDTO userDTO){
+        UserEntity userEntity = modelMapper.map(userDTO, UserEntity.class);
+        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        RoleEntity role = roleRepository.findByRoleName("ROLE_USER");
+        userEntity.setRoleEntity(role);
+        return userEntity;
     }
 
-    public UserDto converEntityToResponseDTO(UserEntity userEntity){
-        UserDto userDTO = modelMapper.map(userEntity, UserDto.class);
+    public UserCreateDTO converEntityToDTO(UserEntity userEntity){
+        UserCreateDTO userDTO = modelMapper.map(userEntity, UserCreateDTO.class);
         return userDTO;
     }
 
     public Object converListEntityToListDTO(List<UserEntity> userEntityList) {
-        List<UserRequestDTO> userDTOS = new ArrayList<>();
+        List<UserCreateDTO> userDTOS = new ArrayList<>();
         for (UserEntity item : userEntityList){
-            UserRequestDTO userDTO = modelMapper.map(item, UserRequestDTO.class);
+            UserCreateDTO userDTO = modelMapper.map(item, UserCreateDTO.class);
             userDTOS.add(userDTO);
         }
         return userDTOS;

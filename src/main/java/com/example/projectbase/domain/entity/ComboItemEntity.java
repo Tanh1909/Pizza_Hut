@@ -3,7 +3,10 @@ package com.example.projectbase.domain.entity;
 import com.example.projectbase.domain.entity.common.BaseEntity;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,19 +14,13 @@ import javax.persistence.*;
 @Setter
 @Builder
 @Entity
-@Table(name = "order_items")
-public class OrderItemEntity extends BaseEntity {
-
-    //So luong san pham trong order_items
-    @Column
-    private Integer quantity;
-
+@Table(name = "combo_item")
+public class ComboItemEntity extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name = "order_id")
-    private OrderEntity orderEntity;
+    @JoinColumn(name = "combo_id")
+    private ComboEntity comboEntity;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
-
 }
