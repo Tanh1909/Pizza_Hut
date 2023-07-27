@@ -1,11 +1,11 @@
 package com.example.projectbase.service.impl;
 
 import com.example.projectbase.constant.ErrorMessage;
-import com.example.projectbase.domain.entity.User;
-import com.example.projectbase.security.UserPrincipal;
-import com.example.projectbase.service.CustomUserDetailsService;
+import com.example.projectbase.domain.entity.UserEntity;
 import com.example.projectbase.exception.NotFoundException;
 import com.example.projectbase.repository.UserRepository;
+import com.example.projectbase.security.UserPrincipal;
+import com.example.projectbase.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,18 +23,19 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService, CustomU
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findByUsername(username)
+    UserEntity userEntity = userRepository.findByUsername(username)
         .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME,
             new String[]{username}));
-    return UserPrincipal.create(user);
+    UserDetails userDetails = UserPrincipal.create(userEntity);
+    return userDetails;
   }
 
   @Override
   @Transactional
   public UserDetails loadUserById(String id) {
-    User user = userRepository.findById(id)
+    UserEntity userEntity = userRepository.findById(id)
         .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{id}));
-    return UserPrincipal.create(user);
+    return UserPrincipal.create(userEntity);
   }
 
 }

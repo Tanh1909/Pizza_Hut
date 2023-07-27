@@ -24,5 +24,4 @@ public abstract class DateAuditing {
   @LastModifiedDate
   @Column(nullable = false)
   private LocalDateTime lastModifiedDate;
-
 }
