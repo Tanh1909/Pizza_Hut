@@ -37,10 +37,6 @@ public class ProductDetailEntity extends BaseEntity {
     @JsonIgnore
     private List<ComboDetailEntity> comboDetailEntities=new ArrayList<>();
 
-    @OneToMany(mappedBy = "productDetailEntity", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<OrderItemEntity> orderItemEntities=new ArrayList<>();
-
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "cart_id")

@@ -23,7 +23,7 @@ public class ComboController {
     @Autowired
     private ComboDetailService comboDetailService;
     @PostMapping("/create")
-    public ResponseEntity<?> create(@Valid @ModelAttribute ComboCreateDTO comboCreateDTO){
+    public ResponseEntity<?> create( @ModelAttribute ComboCreateDTO comboCreateDTO){
         return ResponseEntity.ok(comboService.createCombo(comboCreateDTO));
     }
     @GetMapping("/findAll")
@@ -45,7 +45,6 @@ public class ComboController {
     @GetMapping("/findByComboId/{id}")
     public ResponseEntity<?> findByComboId(@PathVariable Long id){
         return ResponseEntity.ok(comboDetailService.findByComboId(id));
-
     }
 
 }

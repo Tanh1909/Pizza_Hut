@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface CartService {
     CartResponseDTO findCart();
-
+    Long getTotalMoney();
 }

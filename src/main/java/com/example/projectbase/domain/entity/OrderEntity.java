@@ -21,7 +21,7 @@ public class OrderEntity extends BaseEntity {
     @Column
     private Integer percent;
 
-    @Column(nullable = false, unique = false)
+//    @Column(nullable = false, unique = false)
     private Date order_date;
 
     @Column
@@ -40,8 +40,8 @@ public class OrderEntity extends BaseEntity {
     @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "FK_ORDER_USER"))
     private UserEntity userEntity;
 
-    @OneToMany(mappedBy = "orderEntity")
-    @JsonIgnore
-    private List<OrderItemEntity> orderItemEntities=new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "cart_id")
+    private CartEntity cartEntity;
 
 }
