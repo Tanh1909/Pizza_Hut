@@ -16,6 +16,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Slf4j
+//@RequiredArgsConstructor
 @EnableConfigurationProperties({AdminInfoProperties.class})
 @SpringBootApplication
 public class ProjectBaseApplication {
