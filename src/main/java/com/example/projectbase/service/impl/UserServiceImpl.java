@@ -11,6 +11,7 @@ import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.CartEntity;
 import com.example.projectbase.domain.entity.UserEntity;
 import com.example.projectbase.domain.mapper.UserMapper;
+import com.example.projectbase.repository.CartRepository;
 import com.example.projectbase.sendMessage.email.MailService;
 import com.example.projectbase.exception.AlreadyExistsException;
 import com.example.projectbase.exception.NotFoundException;
@@ -43,7 +44,8 @@ public class UserServiceImpl implements UserService {
   private final MailService mailService;
 
   private final PasswordEncoder passwordEncoder;
-
+  @Autowired
+  private  CartRepository cartRepository;
 
   @Autowired
   private UserConverter userConverter;
@@ -117,7 +119,9 @@ public class UserServiceImpl implements UserService {
       throw new AlreadyExistsException("User already exists with phone " + userDTO.getPhoneNumber());
     }
     UserEntity userEntitySave = userConverter.converDTOToEntity(userDTO);
-
+    CartEntity cartEntity=new CartEntity();
+    cartRepository.save(cartEntity);
+    userEntitySave.setCartEntity(cartEntity);
     return ResponseEntity.ok(userConverter.converEntityToDTO(userRepository.save(userEntitySave)));
   }
 

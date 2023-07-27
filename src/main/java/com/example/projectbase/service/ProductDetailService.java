@@ -9,5 +9,5 @@ import java.util.List;
 public interface ProductDetailService {
     public ProductDetailResponseDTO create(ProductDetailCreateDTO productDetailCreateDTO);
     public List<ProductDetailResponseDTO> findAll();
-
+    ProductDetailResponseDTO addToCart(Long id);
 }

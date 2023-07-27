@@ -19,9 +19,6 @@ public class CartEntity extends BaseEntity {
     @OneToOne(mappedBy = "cartEntity",cascade = CascadeType.ALL)
     private UserEntity userEntity;
 
-    @OneToOne(mappedBy = "cartEntity",cascade = CascadeType.ALL)
-    @JsonIgnore
-    private OrderEntity orderEntity;
     @OneToMany(mappedBy = "cartEntity", cascade =CascadeType.ALL )
     private List<ProductDetailEntity> productDetailEntities=new ArrayList<>();
 

@@ -8,4 +8,5 @@ import com.example.projectbase.domain.entity.ComboDetailEntity;
 public interface ComboDetailService {
      ComboDetailResposeDTO create(ComboDetailCreateDTO comboDetailCreateDTO);
      ComboCartDTO findByComboId(Long comboId);
+     ComboCartDTO addToCart(Long id);
 }

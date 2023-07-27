@@ -45,5 +45,10 @@ public class ComboDetailServiceImpl implements ComboDetailService {
         return null;
     }
 
-
+    @Override
+    public ComboCartDTO addToCart(Long id) {
+        ComboDetailEntity comboDetailEntity=comboDetailRepository.findById(id).get();
+        comboDetailEntity.setCartEntity(userService.getCurrentUser().getCartEntity());
+        return cartComboConverter.convertEntityToDTO(comboDetailRepository.save(comboDetailEntity));
+    }
 }

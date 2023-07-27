@@ -31,7 +31,17 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return productDetailConverter.convertListEntityToListDTO(productDetailRepository.findAll());
     }
 
-
+    @Override
+    public ProductDetailResponseDTO addToCart(Long id) {
+        ProductDetailEntity productDetailEntity=productDetailRepository.findById(id).get();
+        productDetailEntity.setCartEntity(userService.getCurrentUser().getCartEntity());
+        for(ProductDetailEntity x: userService.getCurrentUser().getCartEntity().getProductDetailEntities()){
+            if(x.getId()==productDetailEntity.getId()){
+               productDetailEntity.setQuatity(productDetailEntity.getQuatity()+1);
+            }
+        }
+        return productDetailConverter.convertEntityToDTO(productDetailRepository.save(productDetailEntity));
+    }
 
 
 }

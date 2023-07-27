@@ -5,7 +5,7 @@ import com.example.projectbase.domain.dto.request.UserCreateDTO;
 import com.example.projectbase.domain.entity.CartEntity;
 import com.example.projectbase.domain.entity.RoleEntity;
 import com.example.projectbase.domain.entity.UserEntity;
-
+import com.example.projectbase.repository.CartRepository;
 import com.example.projectbase.repository.RoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

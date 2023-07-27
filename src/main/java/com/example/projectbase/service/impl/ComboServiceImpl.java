@@ -29,6 +29,7 @@ public class ComboServiceImpl implements ComboService {
     private ComboConverter comboConverter;
     @Override
     public ComboResponseDTO createCombo(ComboCreateDTO comboCreateDTO) {
+
         Optional<CategoryEntity> optionalCategoryEntity = categoryRepository.findById(comboCreateDTO.getCategoryId());
         if(optionalCategoryEntity.isPresent()){
             ComboEntity comboEntity=comboConverter.converDTOToEntity(comboCreateDTO);
@@ -45,7 +46,7 @@ public class ComboServiceImpl implements ComboService {
     }
 
     @Override
-    public  List<ComboResponseDTO> findAll() {
+    public List<ComboResponseDTO> findAll() {
         return comboConverter.converListEntityToListDTO(comboRepository.findAll());
     }
 
