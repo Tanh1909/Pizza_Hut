@@ -9,4 +9,5 @@ public interface ComboDetailService {
      ComboDetailResposeDTO create(ComboDetailCreateDTO comboDetailCreateDTO);
      ComboCartDTO findByComboId(Long comboId);
      ComboCartDTO addToCart(Long id);
+     void deleteById(Long id);
 }

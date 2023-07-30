@@ -1,6 +1,6 @@
 package com.example.projectbase.controller;
 
-import com.example.projectbase.domain.dto.request.CartCreateDTO;
+import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.service.CartService;
 import com.example.projectbase.service.ComboDetailService;
 import com.example.projectbase.service.ProductDetailService;
@@ -18,16 +18,25 @@ public class CartController {
     @Autowired
     ProductDetailService productDetailService;
     @GetMapping("")
-    public ResponseEntity<?> create(){
-        return ResponseEntity.ok(cartService.findCart());
+    public ResponseEntity<?> findCarts(){
+        return VsResponseUtil.success(cartService.findCart());
     }
-    @PostMapping("/addProduct/{id}")
+    @PostMapping("/product/{id}")
     public ResponseEntity<?> addProduct(@PathVariable Long id){
-
-        return ResponseEntity.ok(productDetailService.addToCart(id));
+        return VsResponseUtil.success(productDetailService.addToCart(id));
     }
-    @PostMapping("/addCombo/{id}")
+    @PostMapping("/combo/{id}")
     public ResponseEntity<?> addCombo(@PathVariable Long id){
-        return ResponseEntity.ok(comboDetailService.addToCart(id));
+        return VsResponseUtil.success(comboDetailService.addToCart(id));
+    }
+    @DeleteMapping("/product/{id}")
+    public  ResponseEntity<?> deleteProduct(@PathVariable Long id){
+        productDetailService.deleteById(id);
+        return ResponseEntity.ok("xoa thanh cong");
+    }
+    @DeleteMapping("/combo/{id}")
+    public  ResponseEntity<?> deleteCombo(@PathVariable Long id){
+        comboDetailService.deleteById(id);
+        return ResponseEntity.ok("xoa thanh cong");
     }
 }

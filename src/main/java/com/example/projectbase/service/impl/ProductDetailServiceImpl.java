@@ -48,6 +48,14 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         }
         return productDetailConverter.convertEntityToDTO(productDetailRepository.save(productDetailEntity));
     }
-
+    @Override
+    public void deleteById(Long id) {
+        if(productDetailRepository.findById(id).isPresent()){
+            productDetailRepository.deleteById(id);
+        }
+        else{
+            throw  new NullPointerException("Khong tim thay id");
+        }
+    }
 
 }
