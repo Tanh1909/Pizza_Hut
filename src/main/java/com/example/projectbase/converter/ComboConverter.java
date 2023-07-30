@@ -2,10 +2,7 @@ package com.example.projectbase.converter;
 
 import com.example.projectbase.domain.dto.request.ComboCreateDTO;
 import com.example.projectbase.domain.dto.response.ComboResponseDTO;
-import com.example.projectbase.domain.entity.CategoryEntity;
 import com.example.projectbase.domain.entity.ComboEntity;
-import com.example.projectbase.repository.CategoryRepository;
-import com.example.projectbase.service.CategoryService;
 import com.example.projectbase.util.UploadFileUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +17,6 @@ public class ComboConverter {
     ModelMapper modelMapper;
     @Autowired
     UploadFileUtil uploadFileCloudinary;
-    @Autowired
-    CategoryRepository categoryRepository;
-
     public ComboEntity converDTOToEntity(ComboCreateDTO comboCreateDTO){
         ComboEntity comboEntity=modelMapper.map(comboCreateDTO,ComboEntity.class);
         try {
@@ -31,8 +25,6 @@ public class ComboConverter {
         }catch (Exception e) {
             e.printStackTrace();
         }
-        CategoryEntity categoryEntity=categoryRepository.findById(comboCreateDTO.getCategoryId()).get();
-        comboEntity.setCategoryEntity(categoryEntity);
         return comboEntity;
     }
     public ComboResponseDTO convertEntityToDTO(ComboEntity comboEntity){

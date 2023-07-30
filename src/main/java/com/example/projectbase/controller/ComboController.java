@@ -1,14 +1,13 @@
 package com.example.projectbase.controller;
 
+import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.domain.dto.request.ComboCreateDTO;
 import com.example.projectbase.domain.dto.request.ComboDetailCreateDTO;
-import com.example.projectbase.domain.dto.request.ProductCreateDTO;
 import com.example.projectbase.service.ComboDetailService;
 import com.example.projectbase.service.ComboService;
 import com.example.projectbase.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,29 +21,25 @@ public class ComboController {
     private ProductService productService;
     @Autowired
     private ComboDetailService comboDetailService;
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<?> create(@Valid @ModelAttribute ComboCreateDTO comboCreateDTO){
-        return ResponseEntity.ok(comboService.createCombo(comboCreateDTO));
+        return VsResponseUtil.success(comboService.create(comboCreateDTO));
     }
-    @GetMapping("/findAll")
-    public ResponseEntity<?> findAll(){
-        return ResponseEntity.ok(comboService.findAll());
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> findComboByCategoryId(@PathVariable Long categoryId){
+        return VsResponseUtil.success(comboService.findByCategoryId(categoryId));
     }
-    @GetMapping("/findByCategory/{category_id}")
-    public ResponseEntity<?> findByCategoryId(@PathVariable Long category_id){
-        return ResponseEntity.ok(comboService.findByCategoryId(category_id));
+    @GetMapping("/products")
+    public ResponseEntity<?> findProductsByCombo(@RequestParam Long comboId,@RequestParam Long categoryId){
+        return VsResponseUtil.success(productService.findByCombo(comboId,categoryId));
     }
-    @GetMapping("/findByCombo")
-    public ResponseEntity<?> findByCombo(@RequestParam Long comboId,@RequestParam Long categoryId){
-        return ResponseEntity.ok(productService.findByCombo(comboId,categoryId));
-    }
-    @PostMapping("/addProduct")
+    @PostMapping("/product")
     public ResponseEntity<?> addProduct(@RequestBody ComboDetailCreateDTO comboDetailCreateDTO){
-        return ResponseEntity.ok(comboDetailService.create(comboDetailCreateDTO));
+        return VsResponseUtil.success(comboDetailService.create(comboDetailCreateDTO));
     }
-    @GetMapping("/findByComboId/{id}")
+    @GetMapping("/product_detail/{id}")
     public ResponseEntity<?> findByComboId(@PathVariable Long id){
-        return ResponseEntity.ok(comboDetailService.findByComboId(id));
+        return VsResponseUtil.success(comboDetailService.findByComboId(id));
 
     }
 

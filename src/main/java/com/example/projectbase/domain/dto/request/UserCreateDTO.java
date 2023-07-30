@@ -1,8 +1,8 @@
 package com.example.projectbase.domain.dto.request;
 
 import com.example.projectbase.constant.ErrorMessage;
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;

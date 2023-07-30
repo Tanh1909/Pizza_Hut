@@ -9,6 +9,7 @@ import com.example.projectbase.domain.dto.response.ComboDetailResposeDTO;
 import com.example.projectbase.domain.entity.ComboDetailEntity;
 import com.example.projectbase.repository.ComboDetailRepository;
 import com.example.projectbase.repository.ComboRepository;
+import com.example.projectbase.repository.ProductDetailRepository;
 import com.example.projectbase.service.ComboDetailService;
 import com.example.projectbase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,14 @@ public class ComboDetailServiceImpl implements ComboDetailService {
     CartComboConverter cartComboConverter;
     @Autowired
     UserService userService;
+    @Autowired
+    ProductDetailRepository productDetailRepository;
     @Override
     public ComboDetailResposeDTO create(ComboDetailCreateDTO comboDetailCreateDTO) {
         ComboDetailEntity comboDetailEntity=comboDetailConvert.convertDTOToEntity(comboDetailCreateDTO);
+        comboDetailEntity.setComboEntity(comboRepository.findById(comboDetailCreateDTO.getCombo_id()).get());
+        comboDetailEntity.setProductDetailEntity(productDetailRepository.findById(comboDetailCreateDTO.getProduct_detail_id()).get());
+        comboDetailEntity.setPrice(comboRepository.findById(comboDetailCreateDTO.getCombo_id()).get().getPrice());
         return comboDetailConvert.convertEntityToDTO(comboDetailRepository.save(comboDetailEntity));
     }
 
