@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-
+//@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -69,6 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     corsConfiguration.addAllowedMethod(HttpMethod.PATCH);
     corsConfiguration.addAllowedMethod(HttpMethod.PUT);
     corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
+    corsConfiguration.addAllowedMethod(HttpMethod.POST);
     return corsConfiguration;
   }
 

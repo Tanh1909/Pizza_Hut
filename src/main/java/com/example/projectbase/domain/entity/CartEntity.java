@@ -1,9 +1,12 @@
 package com.example.projectbase.domain.entity;
 
 import com.example.projectbase.domain.entity.common.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,18 +16,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "cart")
 public class CartEntity extends BaseEntity {
-
-    @Column(nullable = false)
-    private Integer quantity;
-
-    @Column(nullable = false)
-    private Long total_money;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "cartEntity",cascade = CascadeType.ALL)
     private UserEntity userEntity;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private ProductEntity productEntity;
+    @OneToOne(mappedBy = "cartEntity",cascade = CascadeType.ALL)
+    @JsonIgnore
+    private OrderEntity orderEntity;
+    @OneToMany(mappedBy = "cartEntity", cascade =CascadeType.ALL )
+    private List<ProductDetailEntity> productDetailEntities=new ArrayList<>();
+
+    @OneToMany(mappedBy = "cartEntity", cascade =CascadeType.ALL )
+    private List<ComboDetailEntity> comboDetailEntities=new ArrayList<>();
+
+
 }
