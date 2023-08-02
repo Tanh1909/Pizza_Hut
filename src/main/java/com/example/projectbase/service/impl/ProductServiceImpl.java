@@ -2,16 +2,19 @@ package com.example.projectbase.service.impl;
 
 import com.example.projectbase.converter.ProductConverter;
 import com.example.projectbase.domain.dto.request.ProductCreateDTO;
+import com.example.projectbase.domain.dto.request.ProductPointDTO;
 import com.example.projectbase.domain.dto.request.ProductSearchPizzaDTO;
 import com.example.projectbase.domain.dto.response.ProductResponseDTO;
 import com.example.projectbase.domain.entity.CategoryEntity;
 import com.example.projectbase.domain.entity.ProductEntity;
+import com.example.projectbase.domain.entity.UserEntity;
 import com.example.projectbase.exception.AlreadyExistsException;
 import com.example.projectbase.exception.NotFoundException;
 import com.example.projectbase.repository.CategoryRepository;
 import com.example.projectbase.repository.ProductRepository;
 import com.example.projectbase.repository.ProductSizeRepository;
 import com.example.projectbase.service.ProductService;
+import com.example.projectbase.service.UserService;
 import com.example.projectbase.util.BindingResultUtils;
 import com.example.projectbase.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     ProductRepository productRepository;
@@ -124,5 +130,24 @@ public class ProductServiceImpl implements ProductService {
         }
         //check khoas ngoaij
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ProductResponseDTO> findProductHavePoint(){
+        List<ProductEntity> productEntities = productRepository.findProductHavePoint();
+        List<ProductResponseDTO> productResponseDTOS = productConverter.converListEntityToListDTO(productEntities);
+        return productResponseDTOS;
+    }
+
+    @Override
+    public void changePoint(ProductPointDTO productPointDTO){
+        UserEntity userEntity = userService.getCurrentUser();
+        if(userEntity.getPoint() < productPointDTO.getPoint()){
+//            throw new NotFoundException()
+//              bắn ra exception
+        }
+        else{
+            //add vào cart
+        }
     }
 }

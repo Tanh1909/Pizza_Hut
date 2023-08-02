@@ -11,4 +11,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     List<ProductEntity> findByCategoryId(Long categoryId);
     @Query(value = "select p.* FROM products p inner join combo_item cb ON p.id=cb.product_id where combo_id=?1 &&category_id=?2 ",nativeQuery = true)
     List<ProductEntity> findByCombo(Long comboId,Long categoryId);
+    @Query(value = "select p.* FROM products p where p.point != 0",nativeQuery = true)
+    List<ProductEntity> findProductHavePoint();
 }

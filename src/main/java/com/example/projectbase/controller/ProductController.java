@@ -44,4 +44,8 @@ public class ProductController {
         return null;
     }
 
+    @GetMapping("/point")
+    public ResponseEntity<?> productHavePoint(){
+        return ResponseEntity.ok(productService.findProductHavePoint());
+    }
 }
