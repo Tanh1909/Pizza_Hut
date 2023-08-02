@@ -1,5 +1,4 @@
 package com.example.projectbase.domain.dto.request;
-
 import com.example.projectbase.constant.ErrorMessage;
 import lombok.Setter;
 import lombok.Getter;
@@ -7,6 +6,7 @@ import lombok.Getter;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -34,6 +34,8 @@ public class UserCreateDTO {
 
     @NotBlank(message = "address is not empty and null")
     private String address;
+
+    private String birthday;
 
     private String birthday;
 }

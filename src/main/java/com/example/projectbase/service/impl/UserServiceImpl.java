@@ -7,6 +7,7 @@ import com.example.projectbase.domain.dto.common.UserDetailImp;
 import com.example.projectbase.domain.dto.pagination.PaginationFullRequestDto;
 import com.example.projectbase.domain.dto.pagination.PaginationResponseDto;
 import com.example.projectbase.domain.dto.request.UserCreateDTO;
+import com.example.projectbase.domain.dto.request.UserRequestDTO;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.CartEntity;
 import com.example.projectbase.domain.entity.UserEntity;
@@ -30,6 +31,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.security.core.Authentication;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserService {
 
   private final UserMapper userMapper;
 
+
   private final MailService mailService;
 
   private final PasswordEncoder passwordEncoder;
@@ -49,6 +52,10 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private UserConverter userConverter;
+
+  @Autowired
+  private CustomUserDetailsServiceImpl userDetailServiceImp;
+
 
   @Value("${spring.mail.username}")
   private String gmail;
@@ -89,6 +96,20 @@ public class UserServiceImpl implements UserService {
     return userEntity;
   }
 
+
+//  @Override
+//  public ResponseEntity<?> forgotPassWord(String userName) {
+//    Optional<UserEntity> user = userRepository.findByUsername(userName);
+//    if (!user.isPresent()) {
+//      throw new UsernameNotFoundException(String.format("User with username : %s not found ", userName));
+//    }
+//    UserEntity userEntity = user.get();
+//    String passWord = RandomStringUtils.randomAlphanumeric(5);
+//    mailService.sendMail(gmail, "Mật khẩu mới của bạn là: " + passWord);
+//    userEntity.setPassword(passwordEncoder.encode(passWord));
+//    return ResponseEntity.ok(userConverter.converEntityToDTO(userRepository.save(userEntity)));
+//  }
+
   @Override
   public ResponseEntity<?> forgotPassWord(String userName) {
     Optional<UserEntity> user = userRepository.findByUsername(userName);
@@ -97,10 +118,16 @@ public class UserServiceImpl implements UserService {
     }
     UserEntity userEntity = user.get();
     String passWord = RandomStringUtils.randomAlphanumeric(5);
-    mailService.sendMail(gmail, "Mật khẩu mới của bạn là: " + passWord);
+
+    CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+      mailService.sendMail(gmail, String.format(ErrorMessage.User.INF_NEW_PASSWORD, passWord));
+    }, executorService);
+
+    // Thực hiện các tác vụ khác
+
     userEntity.setPassword(passwordEncoder.encode(passWord));
     return ResponseEntity.ok(userConverter.converEntityToDTO(userRepository.save(userEntity)));
-  }
+  }//    // Thực hiện việc gửi mail bất đồng bộ trong một task riêng biệt
 
   @Override
   public ResponseEntity<?> createNewUser(@Valid UserCreateDTO userDTO,
@@ -144,5 +171,6 @@ public class UserServiceImpl implements UserService {
   @Override
   public void deleteUser(String id) {
       userRepository.deleteById(id);
+
   }
 }

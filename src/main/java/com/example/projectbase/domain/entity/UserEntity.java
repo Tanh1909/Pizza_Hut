@@ -40,7 +40,7 @@ public class UserEntity extends DateAuditing {
   private String gender;
 
   @Column
-  private Integer point;
+  private Long point;
 
   @Column(nullable = false, unique = true)
   private String username;

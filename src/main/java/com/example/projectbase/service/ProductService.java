@@ -15,7 +15,7 @@ public interface ProductService {
     ResponseEntity<?> findOne(Long id);
     ResponseEntity<?> updateProduct(ProductCreateDTO productDTO, BindingResult bindingResult);
     void deleteProduct(Long id);
-    ResponseEntity<?> findWithPizza(ProductSearchPizzaDTO productSearchPizzaDTO);
+    List<ProductResponseDTO> findWithPizza(ProductSearchPizzaDTO productSearchPizzaDTO);
     List<ProductResponseDTO> findByCombo(Long comboId,Long categoryId);
 
 }
