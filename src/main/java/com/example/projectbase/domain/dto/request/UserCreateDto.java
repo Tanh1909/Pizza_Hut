@@ -12,28 +12,29 @@ import java.util.Date;
 @Setter
 public class UserCreateDTO {
 
-  @NotBlank(message = ErrorMessage.INVALID_SOME_THING_FIELD_IS_REQUIRED)
-  private String fullName;
+    @NotBlank(message = ErrorMessage.INVALID_SOME_THING_FIELD_IS_REQUIRED)
+    private String fullName;
 
-  @NotBlank(message = ErrorMessage.INVALID_SOME_THING_FIELD_IS_REQUIRED)
-  private String username;
+    @NotBlank(message = ErrorMessage.INVALID_SOME_THING_FIELD_IS_REQUIRED)
+    private String username;
 
-  @Valid
-  @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@])[0-9a-zA-Z@]{8,16}$", message = ErrorMessage.INVALID_FORMAT_PASSWORD)
-  private String password;
+    @Valid
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@])[0-9a-zA-Z@]{8,16}$", message = ErrorMessage.INVALID_FORMAT_PASSWORD)
+    private String password;
 
-  @Valid
-  @Pattern(regexp = "\\d{10}", message = ErrorMessage.ERROR_FORMAT_PHONE)
-  private String phoneNumber;
+    @Valid
+    @Pattern(regexp = "\\d{10}", message = ErrorMessage.ERROR_FORMAT_PHONE)
+    private String phoneNumber;
 
-  @Valid
-  @Pattern(regexp = "^[\\w.%+-]+@gmail\\.com$", message = ErrorMessage.ERROR_FORMAT_EMAIL)
-  private String email;
+    @Valid
+    @Pattern(regexp = "^[\\w.%+-]+@gmail\\.com$", message = ErrorMessage.ERROR_FORMAT_EMAIL)
+    private String email;
 
-  private String gender;
+    private String gender;
 
-  @NotBlank(message = "address is not empty and null")
-  private String address;
+    @NotBlank(message = "address is not empty and null")
+    private String address;
 
-  private Date birthday;
+    private String birthday;
+
 }

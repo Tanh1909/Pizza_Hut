@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,8 +14,8 @@ import java.util.Set;
 @Setter
 @Builder
 @Entity
-@Table(name = "product_size")
-public class ProductSizeEntity extends BaseEntity {
+@Table(name = "product_detail")
+public class ProductDetailEntity extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -27,8 +27,19 @@ public class ProductSizeEntity extends BaseEntity {
 
     @Column(nullable = false)
     private Long price;
+    private int quatity=1;
 
-    @OneToMany(mappedBy = "productSizeEntity", cascade = CascadeType.ALL )
+    @ManyToOne
+    @JoinColumn(name = "cake_base_id")
+    private CakeBaseEntity cakeBaseEntity;
+
+    @OneToMany(mappedBy = "productDetailEntity", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<CakeBaseEntity> cakeBaseEntitySet = new HashSet<>();
+    private List<ComboDetailEntity> comboDetailEntities=new ArrayList<>();
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "cart_id")
+    private CartEntity cartEntity;
+
 }
