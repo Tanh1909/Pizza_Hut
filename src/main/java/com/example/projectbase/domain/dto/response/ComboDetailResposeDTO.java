@@ -13,5 +13,4 @@ public class ComboDetailResposeDTO {
     private Long id;
     private String comboName;
     private String ProductName;
-
 }
