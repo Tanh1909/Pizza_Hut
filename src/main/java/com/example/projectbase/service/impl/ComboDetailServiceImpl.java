@@ -51,4 +51,14 @@ public class ComboDetailServiceImpl implements ComboDetailService {
         comboDetailEntity.setCartEntity(userService.getCurrentUser().getCartEntity());
         return cartComboConverter.convertEntityToDTO(comboDetailRepository.save(comboDetailEntity));
     }
+    @Override
+    public void deleteById(Long id) {
+        if(comboDetailRepository.findById(id).isPresent()){
+            comboDetailRepository.deleteById(id);
+        }
+        else{
+            throw new NullPointerException("Khong tim thay id!");
+        }
+
+    }
 }

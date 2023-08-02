@@ -1,5 +1,6 @@
 package com.example.projectbase.controller;
 
+import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.domain.dto.request.ComboCreateDTO;
 import com.example.projectbase.domain.dto.request.OrderCreateDTO;
 import com.example.projectbase.service.OrderService;
@@ -15,12 +16,13 @@ import javax.validation.Valid;
 public class OrderController {
     @Autowired
     private OrderService orderService;
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<?> create(@RequestBody OrderCreateDTO orderCreateDTO){
-        return ResponseEntity.ok(orderService.create(orderCreateDTO));
+
+        return VsResponseUtil.success(orderService.create(orderCreateDTO));
     }
-    @GetMapping("/findAll")
+    @GetMapping("")
     public ResponseEntity<?> findAll(){
-        return ResponseEntity.ok(orderService.findAll());
+        return VsResponseUtil.success(orderService.findAll());
     }
 }

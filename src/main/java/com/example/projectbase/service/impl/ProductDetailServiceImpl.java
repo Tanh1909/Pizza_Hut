@@ -27,11 +27,6 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public List<ProductDetailResponseDTO> findAll() {
-        return productDetailConverter.convertListEntityToListDTO(productDetailRepository.findAll());
-    }
-
-    @Override
     public ProductDetailResponseDTO addToCart(Long id) {
         ProductDetailEntity productDetailEntity=productDetailRepository.findById(id).get();
         productDetailEntity.setCartEntity(userService.getCurrentUser().getCartEntity());
@@ -41,6 +36,15 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             }
         }
         return productDetailConverter.convertEntityToDTO(productDetailRepository.save(productDetailEntity));
+    }
+    @Override
+    public void deleteById(Long id) {
+        if(productDetailRepository.findById(id).isPresent()){
+            productDetailRepository.deleteById(id);
+        }
+        else{
+            throw  new NullPointerException("Khong tim thay id");
+        }
     }
 
 

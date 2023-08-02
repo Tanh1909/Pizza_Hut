@@ -33,6 +33,7 @@ public class OrderServiceImpl implements OrderService {
         CartEntity cartEntity=new CartEntity();
         cartRepository.save(cartEntity);
         UserEntity user=userService.getCurrentUser();
+        user.setPoint(user.getPoint()+ orderEntity.getTotal_money()/10000);
         user.setCartEntity(cartEntity);
         userRepository.save(user);
         return orderConverter.convertEntityToDTO(orderRepository.save(orderEntity));

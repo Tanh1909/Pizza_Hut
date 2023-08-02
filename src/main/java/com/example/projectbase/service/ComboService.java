@@ -10,11 +10,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 public interface ComboService {
-    ComboResponseDTO createCombo(ComboCreateDTO comboCreateDTO);
-    ComboResponseDTO findOne(Long id);
-    List<ComboResponseDTO> findAll();
-    void deleteCombo(Long id);
+    ComboResponseDTO create(ComboCreateDTO comboCreateDTO);
     List<ComboResponseDTO> findByCategoryId(Long category_id);
-
 
 }

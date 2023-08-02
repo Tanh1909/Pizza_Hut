@@ -27,7 +27,7 @@ public class ComboDetailConvert {
     }
     public ComboDetailResposeDTO convertEntityToDTO(ComboDetailEntity comboDetailEntity){
         ComboDetailResposeDTO comboDetailResposeDTO=new ComboDetailResposeDTO();
-        comboDetailEntity.setId(comboDetailEntity.getId());
+        comboDetailResposeDTO.setId(comboDetailEntity.getId());
         comboDetailResposeDTO.setComboName(comboDetailEntity.getComboEntity().getName());
         comboDetailResposeDTO.setProductName(comboDetailEntity.getProductDetailEntity().getProductEntity().getName());
         return comboDetailResposeDTO;
