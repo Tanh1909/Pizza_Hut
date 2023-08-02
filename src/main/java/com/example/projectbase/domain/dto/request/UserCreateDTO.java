@@ -37,5 +37,4 @@ public class UserCreateDTO {
 
     private String birthday;
 
-    private String birthday;
 }
