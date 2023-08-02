@@ -35,14 +35,9 @@ import org.springframework.security.core.Authentication;
 
 import javax.validation.Valid;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Service
 public class UserServiceImpl implements UserService {
-
-  private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
   private final UserRepository userRepository;
 
@@ -60,6 +55,7 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private CustomUserDetailsServiceImpl userDetailServiceImp;
+
 
   @Value("${spring.mail.username}")
   private String gmail;
@@ -100,6 +96,7 @@ public class UserServiceImpl implements UserService {
     return userEntity;
   }
 
+
 //  @Override
 //  public ResponseEntity<?> forgotPassWord(String userName) {
 //    Optional<UserEntity> user = userRepository.findByUsername(userName);
@@ -114,10 +111,10 @@ public class UserServiceImpl implements UserService {
 //  }
 
   @Override
-  public ResponseEntity<?> forgotPassWord(String userName)  {
+  public ResponseEntity<?> forgotPassWord(String userName) {
     Optional<UserEntity> user = userRepository.findByUsername(userName);
     if (!user.isPresent()) {
-      throw new UsernameNotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME);
+      throw new UsernameNotFoundException(String.format("User with username : %s not found ", userName));
     }
     UserEntity userEntity = user.get();
     String passWord = RandomStringUtils.randomAlphanumeric(5);
@@ -127,10 +124,8 @@ public class UserServiceImpl implements UserService {
     }, executorService);
 
     // Thực hiện các tác vụ khác
-    userEntity.setPassword(passwordEncoder.encode(passWord));
-    // Tiếp tục thực hiện các tác vụ khác nếu cần
 
-    // Trả kết quả về cho client ngay lập tức
+    userEntity.setPassword(passwordEncoder.encode(passWord));
     return ResponseEntity.ok(userConverter.converEntityToDTO(userRepository.save(userEntity)));
   }//    // Thực hiện việc gửi mail bất đồng bộ trong một task riêng biệt
 
@@ -140,15 +135,15 @@ public class UserServiceImpl implements UserService {
     BindingResultUtils.bindResult(bindingResult);
     Optional<UserEntity> userUserName = userRepository.findByUsername(userDTO.getUsername());
     if(userUserName.isPresent() ){
-      throw new AlreadyExistsException(ErrorMessage.User.ALREADY_OBJECT_WITH_USERNAME + userDTO.getUsername());
+      throw new AlreadyExistsException("User already exists with username " + userDTO.getUsername());
     }
     UserEntity userEntity = userRepository.findByEmail(userDTO.getEmail());
     if(userEntity != null) {
-      throw new AlreadyExistsException(ErrorMessage.User.ALREADY_OBJECT_WITH_USERNAME + userDTO.getEmail());
+      throw new AlreadyExistsException("User already exists with username " + userDTO.getEmail());
     }
     userEntity = userRepository.findByPhone(userDTO.getPhoneNumber());
     if(userEntity != null){
-      throw new AlreadyExistsException(ErrorMessage.User.ALREADY_OBJECT_WITH_PHONE + userDTO.getPhoneNumber());
+      throw new AlreadyExistsException("User already exists with phone " + userDTO.getPhoneNumber());
     }
     UserEntity userEntitySave = userConverter.converDTOToEntity(userDTO);
     CartEntity cartEntity=new CartEntity();
