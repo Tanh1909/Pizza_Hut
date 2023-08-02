@@ -7,6 +7,7 @@ import com.example.projectbase.domain.dto.common.UserDetailImp;
 import com.example.projectbase.domain.dto.pagination.PaginationFullRequestDto;
 import com.example.projectbase.domain.dto.pagination.PaginationResponseDto;
 import com.example.projectbase.domain.dto.request.UserCreateDTO;
+import com.example.projectbase.domain.dto.request.UserRequestDTO;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.CartEntity;
 import com.example.projectbase.domain.entity.UserEntity;
@@ -30,6 +31,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.security.core.Authentication;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -46,6 +48,7 @@ public class UserServiceImpl implements UserService {
 
   private final UserMapper userMapper;
 
+
   private final MailService mailService;
 
   private final PasswordEncoder passwordEncoder;
@@ -54,6 +57,9 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private UserConverter userConverter;
+
+  @Autowired
+  private CustomUserDetailsServiceImpl userDetailServiceImp;
 
   @Value("${spring.mail.username}")
   private String gmail;
@@ -170,5 +176,6 @@ public class UserServiceImpl implements UserService {
   @Override
   public void deleteUser(String id) {
       userRepository.deleteById(id);
+
   }
 }

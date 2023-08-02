@@ -2,6 +2,7 @@ package com.example.projectbase.converter;
 
 import com.example.projectbase.domain.dto.common.UserDetailImp;
 import com.example.projectbase.domain.dto.request.UserCreateDTO;
+
 import com.example.projectbase.domain.entity.CartEntity;
 import com.example.projectbase.domain.entity.RoleEntity;
 import com.example.projectbase.domain.entity.UserEntity;
@@ -28,6 +29,7 @@ public class UserConverter {
 
     public UserEntity converDTOToEntity(UserCreateDTO userDTO, UserDetailImp userDetailImp){
         UserEntity userEntity = modelMapper.map(userDTO, UserEntity.class);
+
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         RoleEntity role = roleRepository.findByRoleName("ROLE_USER");
         userEntity.setRoleEntity(role);
