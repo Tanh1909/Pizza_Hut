@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-//@RequiredArgsConstructor
 @RestApiV1
 public class UserController {
 

@@ -3,7 +3,9 @@ package com.example.projectbase.domain.mapper;
 import com.example.projectbase.domain.dto.request.UserRequestDTO;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.UserEntity;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 import java.util.List;
 

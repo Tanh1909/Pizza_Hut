@@ -34,9 +34,14 @@ import org.springframework.security.core.Authentication;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+  private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
   private final UserRepository userRepository;
 
@@ -83,16 +88,38 @@ public class UserServiceImpl implements UserService {
     return userConverter.converEntityToResponseDTO(userEntity);
   }
 
+//  @Override
+//  public ResponseEntity<?> forgotPassWord(String userName) {
+//    Optional<UserEntity> user = userRepository.findByUsername(userName);
+//    if (!user.isPresent()) {
+//      throw new UsernameNotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME);
+//    }
+//    UserEntity userEntity = user.get();
+//    String passWord = RandomStringUtils.randomAlphanumeric(5);
+//    CompletableFuture<String> mailResult = mailService.sendMail(gmail, ErrorMessage.User.INF_NEW_PASSWORD + passWord);
+//    userEntity.setPassword(passwordEncoder.encode(passWord));
+//    return ResponseEntity.ok(userConverter.converEntityToDTO(userRepository.save(userEntity)));
+//  }
+
   @Override
-  public ResponseEntity<?> forgotPassWord(String userName) {
+  public ResponseEntity<?> forgotPassWord(String userName)  {
     Optional<UserEntity> user = userRepository.findByUsername(userName);
     if (!user.isPresent()) {
-      throw new UsernameNotFoundException(String.format("User with username : %s not found ", userName));
+      throw new UsernameNotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME);
     }
     UserEntity userEntity = user.get();
     String passWord = RandomStringUtils.randomAlphanumeric(5);
-    mailService.sendMail(gmail, "Mật khẩu mới của bạn là: " + passWord);
+
+    // Thực hiện việc gửi mail bất đồng bộ trong một task riêng biệt
+    CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+      mailService.sendMail(gmail, String.format(ErrorMessage.User.INF_NEW_PASSWORD, passWord));
+    }, executorService);
+
+    // Thực hiện các tác vụ khác
     userEntity.setPassword(passwordEncoder.encode(passWord));
+    // Tiếp tục thực hiện các tác vụ khác nếu cần
+
+    // Trả kết quả về cho client ngay lập tức
     return ResponseEntity.ok(userConverter.converEntityToDTO(userRepository.save(userEntity)));
   }
 
@@ -102,15 +129,15 @@ public class UserServiceImpl implements UserService {
     BindingResultUtils.bindResult(bindingResult);
     Optional<UserEntity> userUserName = userRepository.findByUsername(userDTO.getUsername());
     if(userUserName.isPresent() ){
-      throw new AlreadyExistsException("User already exists with username " + userDTO.getUsername());
+      throw new AlreadyExistsException(ErrorMessage.User.ALREADY_OBJECT_WITH_USERNAME + userDTO.getUsername());
     }
     UserEntity userEntity = userRepository.findByEmail(userDTO.getEmail());
     if(userEntity != null) {
-      throw new AlreadyExistsException("User already exists with username " + userDTO.getEmail());
+      throw new AlreadyExistsException(ErrorMessage.User.ALREADY_OBJECT_WITH_USERNAME + userDTO.getEmail());
     }
     userEntity = userRepository.findByPhone(userDTO.getPhoneNumber());
     if(userEntity != null){
-      throw new AlreadyExistsException("User already exists with phone " + userDTO.getPhoneNumber());
+      throw new AlreadyExistsException(ErrorMessage.User.ALREADY_OBJECT_WITH_PHONE + userDTO.getPhoneNumber());
     }
     UserEntity userEntitySave = userConverter.converDTOToEntity(userDTO);
     RoleEntity role = roleRepository.findByRoleName("ROLE_USER");
