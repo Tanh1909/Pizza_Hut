@@ -1,34 +1,39 @@
 package com.example.projectbase.domain.dto.request;
-
 import com.example.projectbase.constant.ErrorMessage;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.Getter;
 
-import javax.validation.constraints.Email;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class UserCreateDto {
+public class UserCreateDTO {
 
-  @NotNull(message = ErrorMessage.INVALID_SOME_THING_FIELD_IS_REQUIRED)
+  @NotBlank(message = ErrorMessage.INVALID_SOME_THING_FIELD_IS_REQUIRED)
+  private String fullName;
+
+  @NotBlank(message = ErrorMessage.INVALID_SOME_THING_FIELD_IS_REQUIRED)
   private String username;
 
-  @NotNull(message = ErrorMessage.INVALID_SOME_THING_FIELD_IS_REQUIRED)
-  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$", message = ErrorMessage.INVALID_FORMAT_PASSWORD)
+  @Valid
+  @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@])[0-9a-zA-Z@]{8,16}$", message = ErrorMessage.INVALID_FORMAT_PASSWORD)
   private String password;
 
-  @NotBlank(message = ErrorMessage.NOT_BLANK_FIELD)
-  private String firstName;
+  @Valid
+  @Pattern(regexp = "\\d{10}", message = ErrorMessage.ERROR_FORMAT_PHONE)
+  private String phoneNumber;
 
-  @NotBlank(message = ErrorMessage.NOT_BLANK_FIELD)
-  private String lastName;
+  @Valid
+  @Pattern(regexp = "^[\\w.%+-]+@gmail\\.com$", message = ErrorMessage.ERROR_FORMAT_EMAIL)
+  private String email;
 
+  private String gender;
+
+  @NotBlank(message = "address is not empty and null")
+  private String address;
+
+  private Date birthday;
 }

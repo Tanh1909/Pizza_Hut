@@ -1,6 +1,7 @@
 package com.example.projectbase.converter;
 
 import com.example.projectbase.domain.dto.common.UserDetailImp;
+import com.example.projectbase.domain.dto.request.UserCreateDTO;
 import com.example.projectbase.domain.dto.request.UserRequestDTO;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.RoleEntity;
@@ -26,7 +27,7 @@ public class UserConverter {
     private PasswordEncoder passwordEncoder;
 
 //    hàm conver đang sai, cần sửa
-    public UserEntity converDTOToEntity(UserRequestDTO userDTO, UserEntity userEntity){
+    public UserEntity converDTOToEntity(UserCreateDTO userDTO, UserEntity userEntity){
         String id = userEntity.getId();
         userEntity = modelMapper.map(userDTO, UserEntity.class);
         userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));

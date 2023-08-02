@@ -3,8 +3,10 @@ package com.example.projectbase.service.impl;
 import com.example.projectbase.constant.ErrorMessage;
 import com.example.projectbase.constant.SortByDataConstant;
 import com.example.projectbase.converter.UserConverter;
+import com.example.projectbase.domain.dto.common.UserDetailImp;
 import com.example.projectbase.domain.dto.pagination.PaginationFullRequestDto;
 import com.example.projectbase.domain.dto.pagination.PaginationResponseDto;
+import com.example.projectbase.domain.dto.request.UserCreateDTO;
 import com.example.projectbase.domain.dto.request.UserRequestDTO;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.RoleEntity;
@@ -19,13 +21,16 @@ import com.example.projectbase.service.UserService;
 import com.example.projectbase.util.BindingResultUtils;
 import com.example.projectbase.util.PaginationUtil;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.security.core.Authentication;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -42,13 +47,14 @@ public class UserServiceImpl implements UserService {
 
   private final UserConverter userConverter;
 
-//  private final UserMapper userMapper;
-
   private final MailService mailService;
 
   private final PasswordEncoder passwordEncoder;
 
   private final RoleRepository roleRepository;
+
+  @Autowired
+  private CustomUserDetailsServiceImpl userDetailServiceImp;
 
   @Value("${spring.mail.username}")
   private String gmail;
@@ -137,5 +143,26 @@ public class UserServiceImpl implements UserService {
     RoleEntity role = roleRepository.findByRoleName("ROLE_USER");
     userEntitySave.setRoleEntity(role);
     return ResponseEntity.ok(userConverter.converEntityToDTO(userRepository.save(userEntitySave)));
+  }
+
+  @Override
+  public ResponseEntity<?> updateUser(UserCreateDTO userDTO, BindingResult bindingResult) {
+    BindingResultUtils.bindResult(bindingResult);
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    UserDetailImp userDetailImp = new UserDetailImp();
+    if (authentication != null && authentication.isAuthenticated()) {
+      String userName = authentication.getPrincipal().toString();
+      userDetailImp = (UserDetailImp)userDetailServiceImp.loadUserByUsername(userName);
+    }
+    if(userDetailImp != null){
+      UserEntity existUserEntity = userConverter.converUserDetailToEntity(userDetailImp);
+      existUserEntity = userConverter.converDTOToEntity(userDTO, existUserEntity);
+
+      UserEntity userEntity = userRepository.save(existUserEntity);
+      return  ResponseEntity.ok(userConverter.converEntityToDTO(userEntity));
+    }
+    else{
+      throw new NotFoundException("User not found ");
+    }
   }
 }
