@@ -6,7 +6,6 @@ import com.example.projectbase.domain.dto.request.ProductSearchPizzaDTO;
 import com.example.projectbase.domain.dto.response.ProductResponseDTO;
 import com.example.projectbase.domain.entity.CategoryEntity;
 import com.example.projectbase.domain.entity.ProductEntity;
-import com.example.projectbase.domain.entity.SizeEntity;
 import com.example.projectbase.exception.AlreadyExistsException;
 import com.example.projectbase.exception.NotFoundException;
 import com.example.projectbase.repository.CategoryRepository;
@@ -50,10 +49,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseEntity<?> findWithPizza(ProductSearchPizzaDTO productSearchPizzaDTO){
+    public List<ProductResponseDTO> findWithPizza(ProductSearchPizzaDTO productSearchPizzaDTO){
         List<ProductEntity> productList = productRepository.findByCategoryId(productSearchPizzaDTO.getCategoryId());
         if (productSearchPizzaDTO.getCakeSize() == null && productSearchPizzaDTO.getCakeBase() == null) {
-            return ResponseEntity.ok(productConverter.converListEntityToListDTO(productList));
+            return productConverter.converListEntityToListDTO(productList);
         }
         List<ProductResponseDTO> productResponseDTOS = new ArrayList<>();
         for (ProductEntity item : productList){
@@ -74,8 +73,7 @@ public class ProductServiceImpl implements ProductService {
             //neu khong co thi gan mac dinh
             productResponseDTOS.add(productResponseDTO);
         }
-        return ResponseEntity.ok(productConverter.converListEntityToListDTO(productList));
-
+        return productResponseDTOS;
     }
 
     @Override
