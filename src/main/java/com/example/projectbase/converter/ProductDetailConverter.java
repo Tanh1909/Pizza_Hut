@@ -27,8 +27,12 @@ public class ProductDetailConverter {
     public ProductDetailEntity convertDTOToEntity(ProductDetailCreateDTO productDetailCreateDTO){
         ProductDetailEntity productDetailEntity=new ProductDetailEntity();
         productDetailEntity.setProductEntity(productRepository.findById(productDetailCreateDTO.getProductId()).orElseThrow(() -> new NullPointerException("khong tim thay product")));
-        productDetailEntity.setSizeEntity(sizeRepository.findById(productDetailCreateDTO.getSizeId()).orElseThrow(() -> new NullPointerException("khong tim thay size")));
-        productDetailEntity.setCakeBaseEntity(cakeBaseRepository.findById(productDetailCreateDTO.getCakeBaseId()).orElseThrow(() -> new NullPointerException("khong tim thay cakebase")));
+        if(productDetailCreateDTO.getSizeId()!=null){
+            productDetailEntity.setSizeEntity(sizeRepository.findById(productDetailCreateDTO.getSizeId()).get());
+        }
+        if(productDetailCreateDTO.getCakeBaseId()!=null){
+            productDetailEntity.setCakeBaseEntity(cakeBaseRepository.findById(productDetailCreateDTO.getCakeBaseId()).get());
+        }
         productDetailEntity.setPrice(1L);
 
         return productDetailEntity;
@@ -39,8 +43,12 @@ public class ProductDetailConverter {
         productDetailResponseDTO.setQuatity(productDetailEntity.getQuatity());
         productDetailResponseDTO.setId(productDetailEntity.getId());
         productDetailResponseDTO.setProductName(productDetailEntity.getProductEntity().getName());
-        productDetailResponseDTO.setCakeBaseName(productDetailEntity.getCakeBaseEntity().getName());
-        productDetailResponseDTO.setSizeName(productDetailEntity.getSizeEntity().getName());
+        if(productDetailEntity.getSizeEntity()!=null){
+            productDetailResponseDTO.setSizeName(productDetailEntity.getSizeEntity().getName());
+        }
+        if(productDetailEntity.getCakeBaseEntity()!=null){
+            productDetailResponseDTO.setCakeBaseName(productDetailEntity.getCakeBaseEntity().getName());
+        }
         return productDetailResponseDTO;
     }
     public List<ProductDetailResponseDTO> convertListEntityToListDTO(List<ProductDetailEntity> productDetailEntities){

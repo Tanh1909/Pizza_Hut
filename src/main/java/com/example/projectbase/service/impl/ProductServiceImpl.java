@@ -5,14 +5,11 @@ import com.example.projectbase.domain.dto.request.ProductCreateDTO;
 import com.example.projectbase.domain.dto.request.ProductPointDTO;
 import com.example.projectbase.domain.dto.request.ProductSearchPizzaDTO;
 import com.example.projectbase.domain.dto.response.ProductResponseDTO;
-import com.example.projectbase.domain.entity.CategoryEntity;
-import com.example.projectbase.domain.entity.ProductEntity;
-import com.example.projectbase.domain.entity.UserEntity;
+import com.example.projectbase.domain.entity.*;
 import com.example.projectbase.exception.AlreadyExistsException;
 import com.example.projectbase.exception.NotFoundException;
-import com.example.projectbase.repository.CategoryRepository;
-import com.example.projectbase.repository.ProductRepository;
-import com.example.projectbase.repository.ProductSizeRepository;
+import com.example.projectbase.repository.*;
+import com.example.projectbase.service.ProductDetailService;
 import com.example.projectbase.service.ProductService;
 import com.example.projectbase.service.UserService;
 import com.example.projectbase.util.BindingResultUtils;
@@ -34,6 +31,12 @@ public class ProductServiceImpl implements ProductService {
     UserService userService;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    ProductDetailRepository productDetailRepository;
+
+    @Autowired
     ProductRepository productRepository;
 
     @Autowired
@@ -44,6 +47,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ProductSizeRepository productSizeRepository;
+
+    @Autowired
+    ProductDetailService productDetailService;
 
     @Override
     public ResponseEntity<?> findOne(Long id) {
@@ -140,14 +146,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void changePoint(ProductPointDTO productPointDTO){
+    public void changePoint(Long id){
         UserEntity userEntity = userService.getCurrentUser();
-        if(userEntity.getPoint() < productPointDTO.getPoint()){
+        CartEntity cartEntity=userEntity.getCartEntity();
+        ProductEntity productEntity =productRepository.findById(id).orElseThrow(() -> new NullPointerException("không tìm thấy"));
+
+        if(userEntity.getPoint() < productEntity.getPoint()||productEntity.getPoint()==0){
 //            throw new NotFoundException()
 //              bắn ra exception
+            throw new NullPointerException("không đủ điểm!");
         }
         else{
             //add vào cart
+            userEntity.setPoint(userEntity.getPoint()-productEntity.getPoint());
+            userRepository.save(userEntity);
+            ProductDetailEntity productDetailEntity=new ProductDetailEntity();
+            productDetailEntity.setProductEntity(productEntity);
+            productDetailEntity.setCartEntity(cartEntity);
+            productDetailEntity.setPrice(0L);
+            productDetailService.addToCart(productDetailRepository.save(productDetailEntity).getId());
         }
     }
 }

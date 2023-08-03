@@ -27,7 +27,7 @@ public class ProductDetailEntity extends BaseEntity {
 
     @Column(nullable = false)
     private Long price;
-    private int quatity=1;
+    private int quatity=0;
 
     @ManyToOne
     @JoinColumn(name = "cake_base_id")

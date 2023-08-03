@@ -19,5 +19,5 @@ public interface ProductService {
     List<ProductResponseDTO> findWithPizza(ProductSearchPizzaDTO productSearchPizzaDTO);
     List<ProductResponseDTO> findByCombo(Long comboId,Long categoryId);
     List<ProductResponseDTO> findProductHavePoint();
-    void changePoint(ProductPointDTO productPointDTO);
+    void changePoint(Long id);
 }
