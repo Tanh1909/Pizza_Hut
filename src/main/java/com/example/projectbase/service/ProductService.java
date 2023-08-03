@@ -1,6 +1,7 @@
 package com.example.projectbase.service;
 
 import com.example.projectbase.domain.dto.request.ProductCreateDTO;
+import com.example.projectbase.domain.dto.request.ProductPointDTO;
 import com.example.projectbase.domain.dto.request.ProductSearchPizzaDTO;
 import com.example.projectbase.domain.dto.response.ProductResponseDTO;
 import org.springframework.http.ResponseEntity;
@@ -17,5 +18,6 @@ public interface ProductService {
     void deleteProduct(Long id);
     List<ProductResponseDTO> findWithPizza(ProductSearchPizzaDTO productSearchPizzaDTO);
     List<ProductResponseDTO> findByCombo(Long comboId,Long categoryId);
-
+    List<ProductResponseDTO> findProductHavePoint();
+    void changePoint(ProductPointDTO productPointDTO);
 }

@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private CustomUserDetailsServiceImpl userDetailServiceImp;
-  
+
   @Value("${spring.mail.username}")
   private String gmail;
 
