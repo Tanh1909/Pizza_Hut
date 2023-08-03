@@ -1,5 +1,6 @@
 package com.example.projectbase.controller;
 
+import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.domain.dto.request.ProductCreateDTO;
 import com.example.projectbase.domain.dto.request.ProductSearchPizzaDTO;
 import com.example.projectbase.domain.dto.response.ProductResponseDTO;
@@ -47,5 +48,11 @@ public class ProductController {
     @GetMapping("/point")
     public ResponseEntity<?> productHavePoint(){
         return ResponseEntity.ok(productService.findProductHavePoint());
+    }
+
+    @PostMapping("/point/{id}")
+    public ResponseEntity changePoint(@PathVariable Long id){
+        productService.changePoint(id);
+        return VsResponseUtil.success("đổi thành công");
     }
 }

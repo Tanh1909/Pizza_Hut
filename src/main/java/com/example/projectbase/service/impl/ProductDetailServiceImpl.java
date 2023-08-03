@@ -29,13 +29,14 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Override
     public ProductDetailResponseDTO addToCart(Long id) {
         ProductDetailEntity productDetailEntity=productDetailRepository.findById(id).get();
-        productDetailEntity.setCartEntity(userService.getCurrentUser().getCartEntity());
-        for(ProductDetailEntity x: userService.getCurrentUser().getCartEntity().getProductDetailEntities()){
-            if(x.getId()==productDetailEntity.getId()){
-               productDetailEntity.setQuatity(productDetailEntity.getQuatity()+1);
-            }
+        ProductDetailEntity productDetailEntitySave =productDetailRepository.findProductDetailEntitiesByProductEntityAndSizeEntityAndCakeBaseEntityAndCartEntity(productDetailEntity.getProductEntity(),productDetailEntity.getSizeEntity(),productDetailEntity.getCakeBaseEntity(),userService.getCurrentUser().getCartEntity()).orElse(productDetailEntity);
+        if(productDetailEntitySave.getId()!=id){
+            deleteById(id);
         }
-        return productDetailConverter.convertEntityToDTO(productDetailRepository.save(productDetailEntity));
+        productDetailEntitySave.setQuatity(productDetailEntitySave.getQuatity()+1);
+        productDetailEntity.setCartEntity(userService.getCurrentUser().getCartEntity());
+        return productDetailConverter.convertEntityToDTO(productDetailRepository.save(productDetailEntitySave));
+
     }
     @Override
     public void deleteById(Long id) {
