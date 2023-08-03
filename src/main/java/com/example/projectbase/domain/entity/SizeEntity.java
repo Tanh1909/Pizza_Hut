@@ -18,6 +18,8 @@ public class SizeEntity extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
+
+    private Long price;
     @OneToMany(mappedBy = "sizeEntity", cascade = CascadeType.ALL)
     private List<ProductDetailEntity> productDetailEntities=new ArrayList<>();
 }
