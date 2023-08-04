@@ -28,6 +28,8 @@ public class ProductEntity extends BaseEntity {
 
     private int point;
 
+    private Long price;
+
     @ManyToOne
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "FK_PRODUCT_CATEGORY"))
     private CategoryEntity categoryEntity;

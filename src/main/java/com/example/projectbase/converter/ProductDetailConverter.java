@@ -33,7 +33,7 @@ public class ProductDetailConverter {
         if(productDetailCreateDTO.getCakeBaseId()!=null){
             productDetailEntity.setCakeBaseEntity(cakeBaseRepository.findById(productDetailCreateDTO.getCakeBaseId()).get());
         }
-        productDetailEntity.setPrice(1L);
+        productDetailEntity.setPrice(productDetailEntity.getProductEntity().getPrice()+productDetailEntity.getSizeEntity().getPrice());
 
         return productDetailEntity;
     }
