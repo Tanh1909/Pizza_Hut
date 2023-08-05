@@ -82,6 +82,13 @@ public class GlobalExceptionHandler {
     return VsResponseUtil.error(ex.getStatus(), message);
   }
 
+  @ExceptionHandler(AlreadyExistsException.class)
+  public ResponseEntity<RestData<?>> handlerAlreadyExistsException(AlreadyExistsException ex) {
+//    String message = messageSource.getMessage(ex.getMessage(), ex.getParams(), LocaleContextHolder.getLocale());
+//    log.error(message, ex);
+    return VsResponseUtil.error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+  }
+
   @ExceptionHandler(InvalidException.class)
   public ResponseEntity<RestData<?>> handlerInvalidException(InvalidException ex) {
     log.error(ex.getMessage(), ex);
@@ -107,7 +114,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<RestData<?>> handleUnauthorizedException(UnauthorizedException ex) {
     String message = messageSource.getMessage(ex.getMessage(), ex.getParams(), LocaleContextHolder.getLocale());
     log.error(message, ex);
-    return VsResponseUtil.error(ex.getStatus(), message);
+    return VsResponseUtil.error(HttpStatus.INTERNAL_SERVER_ERROR,ex.getMessage());
   }
 
   @ExceptionHandler(ForbiddenException.class)
