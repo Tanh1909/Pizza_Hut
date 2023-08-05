@@ -34,11 +34,11 @@ public class CartController {
     @DeleteMapping("/product/{id}")
     public  ResponseEntity<?> deleteProduct(@PathVariable Long id){
         productDetailService.deleteById(id);
-        return ResponseEntity.ok("xoa thanh cong");
+        return VsResponseUtil.success("xoa thanh cong");
     }
     @DeleteMapping("/combo/{id}")
     public  ResponseEntity<?> deleteCombo(@PathVariable Long id){
         comboDetailService.deleteById(id);
-        return ResponseEntity.ok("xoa thanh cong");
+        return VsResponseUtil.success("xoa thanh cong");
     }
 }

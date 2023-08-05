@@ -11,6 +11,7 @@ import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.CartEntity;
 import com.example.projectbase.domain.entity.UserEntity;
 import com.example.projectbase.domain.mapper.UserMapper;
+import com.example.projectbase.exception.UnauthorizedException;
 import com.example.projectbase.repository.CartRepository;
 import com.example.projectbase.sendMessage.email.MailService;
 import com.example.projectbase.exception.AlreadyExistsException;
@@ -88,7 +89,10 @@ public class UserServiceImpl implements UserService {
   public UserEntity getCurrentUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDetailImp userDetailImp = new UserDetailImp();
-    if (authentication != null && authentication.isAuthenticated()) {
+    if(authentication.getPrincipal()=="anonymousUser"){
+      throw new AlreadyExistsException("Need to login first!");
+    }
+    else if (authentication != null && authentication.isAuthenticated()) {
       userDetailImp = (UserDetailImp) authentication.getPrincipal();
     } // Đoạn này có thể dùng hàm get current user
     UserEntity userEntity=userRepository.findByUsername(userDetailImp.getUsername()).get();

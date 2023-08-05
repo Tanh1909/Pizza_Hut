@@ -39,7 +39,7 @@ public class UserController {
   @Operation(summary = "API get current user login")
   @GetMapping(UrlConstant.User.GET_CURRENT_USER)
   public ResponseEntity<?> getCurrentUser() {
-    return ResponseEntity.ok(userService.getCurrentUser());
+    return VsResponseUtil.success(userService.getCurrentUser());
   }
 
   @Tag(name = "user-controller-admin")
@@ -51,22 +51,23 @@ public class UserController {
 
   @PostMapping("/forgot-password")
   public ResponseEntity<?> forgotPassWord(@RequestParam String userName){
-    return userService.forgotPassWord(userName);
+    return VsResponseUtil.success(userService.forgotPassWord(userName));
   }
 
   @PostMapping("/new-user")
   public ResponseEntity<?> createUser (@Valid @RequestBody UserCreateDTO userDTO, BindingResult bindingResult) {
-    return userService.createNewUser(userDTO, bindingResult);
+    return VsResponseUtil.success(userService.createNewUser(userDTO, bindingResult));
   }
 
   @PutMapping
   public ResponseEntity<?> updateUser (@Valid @ModelAttribute UserCreateDTO userDTO, BindingResult bindingResult) {
-    return userService.updateUser(userDTO, bindingResult);
+    return VsResponseUtil.success(userService.updateUser(userDTO, bindingResult));
   }
 
   @DeleteMapping
-  public void deleteUser(@RequestParam String id){
+  public ResponseEntity<?> deleteUser(@RequestParam String id){
       userService.deleteUser(id);
+      return VsResponseUtil.success("Xóa thành công!");
   }
 
 }

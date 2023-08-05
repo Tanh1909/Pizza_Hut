@@ -25,19 +25,19 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<?> newProduct(@Valid ProductCreateDTO productCreateDTO, BindingResult bindingResult){
-        return ResponseEntity.ok(productService.createProduct(productCreateDTO, bindingResult));
+        return VsResponseUtil.success(productService.createProduct(productCreateDTO, bindingResult));
     }
 
     @PutMapping
     public ResponseEntity<?> updateProduct(@Valid ProductCreateDTO productCreateDTO, BindingResult bindingResult){
-        return ResponseEntity.ok(productService.updateProduct(productCreateDTO, bindingResult));
+        return VsResponseUtil.success(productService.updateProduct(productCreateDTO, bindingResult));
     }
 
 
     @GetMapping()
     public ResponseEntity<?> findProduct(ProductSearchPizzaDTO productSearchPizzaDTO){
 //        List<ProductResponseDTO> productResponseDTOList = productService.findWithPizza(productSearchPizzaDTO);
-        return ResponseEntity.ok(productService.findWithPizza(productSearchPizzaDTO));
+        return VsResponseUtil.success(productService.findWithPizza(productSearchPizzaDTO));
     }
 
     @GetMapping("/{id}")
@@ -47,7 +47,7 @@ public class ProductController {
 
     @GetMapping("/point")
     public ResponseEntity<?> productHavePoint(){
-        return ResponseEntity.ok(productService.findProductHavePoint());
+        return VsResponseUtil.success(productService.findProductHavePoint());
     }
 
     @PostMapping("/point/{id}")
