@@ -8,7 +8,7 @@ import javax.validation.Valid;
 
 public interface CategoryService {
     ResponseEntity<?> createCategory(@Valid CategoryCreateDTO categoryDTO, BindingResult bindingResult);
-    ResponseEntity<?> findAll(Integer page, Integer size );
+    ResponseEntity<?> findAll();
     ResponseEntity<?> findOne(Long id);
     ResponseEntity<?> findByName(Integer page, Integer size, String nameProduct);
     ResponseEntity<?> updateCategory(Long id, CategoryCreateDTO categoryDTO, BindingResult bindingResult);

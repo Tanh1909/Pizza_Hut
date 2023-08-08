@@ -62,6 +62,7 @@ public class UserEntity extends DateAuditing {
 
   @OneToOne
   @JoinColumn(name = "cart_id",referencedColumnName = "id")
+  @JsonIgnore
   private CartEntity cartEntity;
 
 }

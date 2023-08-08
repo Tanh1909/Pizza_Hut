@@ -52,13 +52,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseEntity<?> findAll(Integer page, Integer size ){
-        if (page == null || page < 0 || size == null || size < 0) {
-            return ResponseEntity.ok(categoryConverter.converListEntityToListDTO(categoryRepository.findAll()));
-        }
-        Page<CategoryEntity> categoryEntities = categoryRepository.findAll(PageRequest.of(page, size));
-        List<CategoryEntity> categoryEntityList = categoryEntities.getContent();
-        return ResponseEntity.ok(categoryConverter.converListEntityToListDTO(categoryEntityList));
+    public ResponseEntity<?> findAll(){
+//        if (page == null || page < 0 || size == null || size < 0) {
+//            return ResponseEntity.ok(categoryConverter.converListEntityToListDTO(categoryRepository.findAll()));
+//        }
+//        Page<CategoryEntity> categoryEntities = categoryRepository.findAll(PageRequest.of(page, size));
+        List<CategoryEntity> categoryEntityList = categoryRepository.findAll();
+        return ResponseEntity.ok(categoryConverter.converListEntityToListDTOResponse(categoryEntityList));
     }
 
     @Override

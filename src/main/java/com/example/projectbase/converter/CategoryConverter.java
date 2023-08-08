@@ -1,6 +1,7 @@
 package com.example.projectbase.converter;
 
 import com.example.projectbase.domain.dto.request.CategoryCreateDTO;
+import com.example.projectbase.domain.dto.response.CategoryResponseDTO;
 import com.example.projectbase.domain.entity.CategoryEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,15 @@ public class CategoryConverter {
         List<CategoryCreateDTO> categoryDTOS = new ArrayList<>();
         for (CategoryEntity item : categoryEntities){
             CategoryCreateDTO categoryDTO = modelMapper.map(item, CategoryCreateDTO.class);
+            categoryDTOS.add(categoryDTO);
+        }
+        return categoryDTOS;
+    }
+
+    public List<CategoryResponseDTO> converListEntityToListDTOResponse(List<CategoryEntity> categoryEntities) {
+        List<CategoryResponseDTO> categoryDTOS = new ArrayList<>();
+        for (CategoryEntity item : categoryEntities){
+            CategoryResponseDTO categoryDTO = modelMapper.map(item, CategoryResponseDTO.class);
             categoryDTOS.add(categoryDTO);
         }
         return categoryDTOS;
