@@ -2,6 +2,7 @@ package com.example.projectbase.service.impl;
 
 import com.example.projectbase.converter.CategoryConverter;
 import com.example.projectbase.domain.dto.request.CategoryCreateDTO;
+import com.example.projectbase.domain.dto.response.CategoryResponseDTO;
 import com.example.projectbase.domain.entity.CategoryEntity;
 import com.example.projectbase.domain.entity.ProductEntity;
 import com.example.projectbase.exception.AlreadyExistsException;
@@ -52,13 +53,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseEntity<?> findAll(){
+    public List <CategoryResponseDTO> findAll(){
 //        if (page == null || page < 0 || size == null || size < 0) {
 //            return ResponseEntity.ok(categoryConverter.converListEntityToListDTO(categoryRepository.findAll()));
 //        }
 //        Page<CategoryEntity> categoryEntities = categoryRepository.findAll(PageRequest.of(page, size));
         List<CategoryEntity> categoryEntityList = categoryRepository.findAll();
-        return ResponseEntity.ok(categoryConverter.converListEntityToListDTOResponse(categoryEntityList));
+        return categoryConverter.converListEntityToListDTOResponse(categoryEntityList);
     }
 
     @Override
