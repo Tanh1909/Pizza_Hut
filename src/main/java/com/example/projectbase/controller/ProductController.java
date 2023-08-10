@@ -35,7 +35,7 @@ public class ProductController {
 
 
     @GetMapping()
-    public ResponseEntity<?> findProduct(@RequestBody ProductSearchPizzaDTO productSearchPizzaDTO){
+    public ResponseEntity<?> findProduct(ProductSearchPizzaDTO productSearchPizzaDTO){
 //        List<ProductResponseDTO> productResponseDTOList = productService.findWithPizza(productSearchPizzaDTO);
         return VsResponseUtil.success(productService.findWithPizza(productSearchPizzaDTO));
     }
