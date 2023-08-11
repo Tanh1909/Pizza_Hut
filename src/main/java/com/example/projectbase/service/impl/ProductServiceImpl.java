@@ -51,6 +51,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductDetailService productDetailService;
 
+    @Autowired
+    SizeRepository sizeRepository;
+
     @Override
     public ResponseEntity<?> findOne(Long id) {
         Optional<ProductEntity> productEntity = productRepository.findById(id);
@@ -70,16 +73,13 @@ public class ProductServiceImpl implements ProductService {
         for (ProductEntity item : productList){
             ProductResponseDTO productResponseDTO = productConverter.converEntityToDTO(item);
             if(item.getId() == productSearchPizzaDTO.getId()){
-                if(!StringUtils.isNullOrEmpty(productSearchPizzaDTO.getCakeSize())){
-                    //get price tu bang product_size len
-                    //add vao dto de hien thi len
-                    String price = String.valueOf(productSizeRepository.findPriceByProductIdAndSizeId(productSearchPizzaDTO.getId(), productSearchPizzaDTO.getCakeSizeId()));
-                    productResponseDTO.setPrice(price);
-                    productResponseDTO.setCakeSize(productResponseDTO.getCakeSize());
-                }
-                if(!StringUtils.isNullOrEmpty(productSearchPizzaDTO.getCakeBase())){
-//                    add vao dto de hien thi len
+                if(productSearchPizzaDTO.getCakeBase()!="string"&&productSearchPizzaDTO.getCakeBase()!=null){
                     productResponseDTO.setCakeBase(productSearchPizzaDTO.getCakeBase());
+                }
+                if(productSearchPizzaDTO.getCakeSizeId()!=0&&productSearchPizzaDTO.getCakeSizeId()!=null){
+                    SizeEntity sizeEntity=sizeRepository.findById(productSearchPizzaDTO.getCakeSizeId()).get();;
+                    productResponseDTO.setCakeSize(sizeEntity.getName());
+                    productResponseDTO.setPrice((item.getPrice()+sizeEntity.getPrice())+"");
                 }
             }
             //neu khong co thi gan mac dinh

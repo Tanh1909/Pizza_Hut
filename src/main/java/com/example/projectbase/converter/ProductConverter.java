@@ -38,6 +38,8 @@ public class ProductConverter {
     public ProductResponseDTO converEntityToDTO(ProductEntity productEntity){
         ProductResponseDTO productResponseDTO = modelMapper.map(productEntity, ProductResponseDTO.class);
         productResponseDTO.setCategoryId(productEntity.getCategoryEntity().getId());
+        productResponseDTO.setCakeBase("Đế Giòn Xốp");
+        productResponseDTO.setCakeSize("nhỏ");
         return productResponseDTO;
     }
 
