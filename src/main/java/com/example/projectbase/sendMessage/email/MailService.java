@@ -40,4 +40,22 @@ public class MailService implements MailSender {
             return "Sent mail Failed !";
         }
     }
+
+    @Override
+    @Async
+    public String sendPassword(String to, String email) {
+        try {
+            MimeMessage mailMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mailMessage, StandardCharsets.UTF_8.name());
+            mimeMessageHelper.setText(email, true);
+            mimeMessageHelper.setSubject("New password!");
+            mimeMessageHelper.setFrom(gmail);
+            mimeMessageHelper.setTo(to);
+            javaMailSender.send(mailMessage);
+            return "Sent mail SuccessFully !";
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return "Sent mail Failed !";
+        }
+    }
 }
