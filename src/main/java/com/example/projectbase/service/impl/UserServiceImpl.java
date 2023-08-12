@@ -117,13 +117,13 @@ public class UserServiceImpl implements UserService {
   public ResponseEntity<?> forgotPassWord(String userName) {
     Optional<UserEntity> user = userRepository.findByUsername(userName);
     if (!user.isPresent()) {
-      throw new UsernameNotFoundException(String.format("User with username : %s not found ", userName));
+      throw new AlreadyExistsException(String.format("User with username : %s not found ", userName));
     }
     UserEntity userEntity = user.get();
     String passWord = RandomStringUtils.randomAlphanumeric(5);
 
     CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-      mailService.sendPassword(gmail, String.format(ErrorMessage.User.INF_NEW_PASSWORD, passWord));
+      mailService.sendPassword(userEntity.getEmail(), String.format(ErrorMessage.User.INF_NEW_PASSWORD, passWord));
     }, executorService);
 
     // Thực hiện các tác vụ khác
