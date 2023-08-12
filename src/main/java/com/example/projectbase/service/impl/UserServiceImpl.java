@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
     String passWord = RandomStringUtils.randomAlphanumeric(5);
 
     CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-      mailService.sendMail(gmail, String.format(ErrorMessage.User.INF_NEW_PASSWORD, passWord));
+      mailService.sendPassword(gmail, String.format(ErrorMessage.User.INF_NEW_PASSWORD, passWord));
     }, executorService);
 
     // Thực hiện các tác vụ khác
